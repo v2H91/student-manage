@@ -21,9 +21,6 @@ public class User {
     @Column(name = "user_id")
     private Long userId;
 
-    @Column(name = "username", nullable = false, length = 50)
-    private String username;
-
     @Column(name = "password", nullable = false, length = 255)
     private String password;
 

@@ -11,10 +11,8 @@ public class UserRequest {
     @NotBlank(message = "Password is required.")
     @Size(min = 6, max = 20, message = "Password must be between 6 and 20 characters.")
     private String password;
-    @NotBlank(message = "Student code is required.")
-    private String studentCode;
     private String fullName;
     @NotNull(message = "Role is required.")
-    @Pattern(regexp = "student|teacher|admin", message = "Role must be one of: student, teacher, admin.")
+    @Pattern(regexp = "STUDENT|TEACHER|ADMIN", message = "Role must be one of: STUDENT, TEACHER, ADMIN.")
     private String role;  // "student", "teacher", "admin"
 }

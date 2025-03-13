@@ -5,9 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import vn.studentmanagement.api.common.AppBusinessError;
+import vn.studentmanagement.api.common.ApplicationException;
 import vn.studentmanagement.api.common.enums.RoleEnum;
+import vn.studentmanagement.api.dto.request.ChangePasswordRequest;
 import vn.studentmanagement.api.dto.request.LoginRequest;
 import vn.studentmanagement.api.dto.request.UserRequest;
 import vn.studentmanagement.api.dto.response.AuthenticationResponse;
@@ -56,8 +58,9 @@ public class UserServiceImpl implements UserService {
                 userTokenRepository.save(new UserToken(token, user.getUserId().toString(), true, new Timestamp(expiration.getTime())));
                 return new AuthenticationResponse(token, user.getRole().toString(), expiration.getTime());
             }
+            throw new ApplicationException(new AppBusinessError("tài khoản của bạn không đúng", 400));
         }
-        throw new RuntimeException("Email hoặc mật khẩu không đúng.");
+        throw new ApplicationException(new AppBusinessError("Tài khoản của bạn chưa có. Hãy liên hệ với Chuyên viên Học viện!", 400));
     }
 
     @Override
@@ -87,9 +90,26 @@ public class UserServiceImpl implements UserService {
         String encryptedPassword = bCryptPasswordEncoder.encode(userRequest.getPassword());
         user.setPassword(encryptedPassword);
         user.setEmail(userRequest.getEmail());
-        user.setUsername(userRequest.getStudentCode());
         user.setRole(RoleEnum.fromString(userRequest.getRole()));
         user.setFullName(userRequest.getFullName());
         return userRepository.save(user);
+    }
+
+    @Override
+    public String changePassword(ChangePasswordRequest request) {
+        User user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new ApplicationException(new AppBusinessError( "Người dùng không có trên hệ thống hoặc mật khẩu không phù hợp", 400)));
+
+        if (!bCryptPasswordEncoder.matches(request.getOldPassword(), user.getPassword())) {
+            return "Mật khẩu cũ không đúng";
+        }
+
+        if (!request.getNewPassword().equals(request.getConfirmPassword())) {
+            return "Mật khẩu mới không khớp nhau";
+        }
+
+        user.setPassword(bCryptPasswordEncoder.encode(request.getNewPassword()));
+        userRepository.save(user);
+        return "Đổi mật khẩu thành công";
     }
 }

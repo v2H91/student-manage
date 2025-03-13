@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import vn.studentmanagement.api.common.CustomAccessDeniedHandler;
 
 
 @Configuration
@@ -23,9 +24,16 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize ->
                         authorize.requestMatchers("/api/v1/auth/**",
-                                        "/swagger-ui/**", "/v3/api-docs/**",
-                                        "/login", "/logout").permitAll()
+                                "swagger-ui.html", "/v3/api-docs/**", "/swagger-ui/**",
+                                         "api/v1/users/**").permitAll()
+                                .requestMatchers("api/v1/admin/**",
+                                        "/api/v1/classes/**","/api/v1/courses/**",
+                                        "/api/v1/semesters/**",
+                                        "/api/v1/students/**").hasRole("ADMIN")
                                 .anyRequest().authenticated()
+                )
+                .exceptionHandling(exceptionHandling ->
+                        exceptionHandling.accessDeniedHandler(new CustomAccessDeniedHandler())
                 )
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)

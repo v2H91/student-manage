@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import vn.studentmanagement.api.common.enums.RoleEnum;
 import vn.studentmanagement.api.entity.User;
 
 import java.util.ArrayList;
@@ -21,10 +22,18 @@ public class CustomUserDetails implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         var roles = new ArrayList<GrantedAuthority>();
+        SimpleGrantedAuthority roleUser;
+        if (user.getRole().equals(RoleEnum.ADMIN)) {
+            roleUser = new SimpleGrantedAuthority(
+                    "ROLE_ADMIN"
+            );
+        } else {
+            roleUser = new SimpleGrantedAuthority(
+                    "ROLE_USER"
+            );
+        }
         roles.add(
-                new SimpleGrantedAuthority(
-                        "ROLE_USER"
-                )
+                roleUser
         );
         return roles;
     }

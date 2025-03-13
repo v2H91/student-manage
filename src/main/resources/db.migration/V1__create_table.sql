@@ -1,9 +1,8 @@
 -- Tạo bảng Người Dùng (Users)
 CREATE TABLE IF NOT EXISTS Users (
                        user_id INT AUTO_INCREMENT PRIMARY KEY,
-                       username VARCHAR(50) NOT NULL,
                        password VARCHAR(255) NOT NULL,
-                       role ENUM('student', 'teacher', 'admin') NOT NULL,
+                       role VARCHAR(100) NOT NULL,
                        full_name VARCHAR(100) NOT NULL,
                        email VARCHAR(100) NOT NULL,
                        date_of_birth DATE NOT NULL,
@@ -11,40 +10,73 @@ CREATE TABLE IF NOT EXISTS Users (
                        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
--- Tạo bảng Môn Học (Subjects)
-CREATE TABLE IF NOT EXISTS Subjects (
-                          subject_id INT AUTO_INCREMENT PRIMARY KEY,
-                          subject_name VARCHAR(100) NOT NULL,
-                          subject_code VARCHAR(20) NOT NULL,
-                          semester VARCHAR(50) NOT NULL,
-                          credits INT NOT NULL
-);
+ CREATE TABLE IF NOT EXISTS Students (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    student_code VARCHAR(50) NOT NULL,
+    first_name VARCHAR(100) NOT NULL,
+    last_name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    phone VARCHAR(15) NOT NULL
+    );
 
--- Tạo bảng Điểm (Grades)
-CREATE TABLE IF NOT EXISTS Grades (
-                        grade_id INT AUTO_INCREMENT PRIMARY KEY,
-                        user_id INT,
-                        subject_id INT,
-                        semester VARCHAR(50) NOT NULL,
-                        score DECIMAL(5, 2) NOT NULL,
-                        grade_type ENUM('test', 'exam', 'assignment') NOT NULL,
-                        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-                        FOREIGN KEY (user_id) REFERENCES Users(user_id),
-                        FOREIGN KEY (subject_id) REFERENCES Subjects(subject_id)
-);
+CREATE TABLE IF NOT EXISTS Semester (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    term INT NOT NULL CHECK (term IN (1, 2, 3)),
+    start_year INT NOT NULL,
+    status varchar(50) DEFAULT 'Chưa diễn ra'
+    );
 
--- Tạo bảng Đăng Ký Môn Học (Course_Registrations)
-CREATE TABLE IF NOT EXISTS Course_Registrations (
-                                      registration_id INT AUTO_INCREMENT PRIMARY KEY,
-                                      user_id INT,
-                                      subject_id INT,
-                                      semester VARCHAR(50) NOT NULL,
-                                      status ENUM('registered', 'completed', 'dropped') NOT NULL,
-                                      registered_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                                      FOREIGN KEY (user_id) REFERENCES Users(user_id),
-                                      FOREIGN KEY (subject_id) REFERENCES Subjects(subject_id)
-);
+CREATE TABLE IF NOT EXISTS Course (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    course_code VARCHAR(50) NOT NULL UNIQUE,
+    name VARCHAR(100) NOT NULL,
+    credits INT NOT NULL,
+    attendance_percentage DECIMAL(5, 2) NOT NULL,
+    test_percentage DECIMAL(5, 2) NOT NULL,
+    practice_percentage DECIMAL(5, 2) NOT NULL,
+    project_percentage DECIMAL(5, 2) NOT NULL
+    );
+
+
+CREATE TABLE IF NOT EXISTS Teacher (
+                                       id INT AUTO_INCREMENT PRIMARY KEY,
+                                       name VARCHAR(100) NOT NULL
+    );
+
+
+CREATE TABLE IF NOT EXISTS Class (
+     id INT AUTO_INCREMENT PRIMARY KEY,
+    course_id INT NOT NULL,
+    class_group VARCHAR(50) NOT NULL,
+    class_name VARCHAR(100) NOT NULL,
+    class_code VARCHAR(50) NOT NULL UNIQUE,
+    teacher_id INT NOT NULL,
+    FOREIGN KEY (course_id) REFERENCES Course(id),
+    FOREIGN KEY (teacher_id) REFERENCES Teacher(id)
+    );
+
+
+
+CREATE TABLE IF NOT EXISTS Class_Score (
+                                           id INT AUTO_INCREMENT PRIMARY KEY,
+                                           class_id INT NOT NULL,
+                                           student_id INT NOT NULL,
+                                           attendance_score DECIMAL(5, 2),
+    test_score DECIMAL(5, 2),
+    practice_score DECIMAL(5, 2),
+    project_score DECIMAL(5, 2),
+    FOREIGN KEY (class_id) REFERENCES Class(id),
+    FOREIGN KEY (student_id) REFERENCES Students(id)
+    );
+
+CREATE TABLE IF NOT EXISTS Semester_Class (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      semester_id INT NOT NULL,
+      class_id INT NOT NULL,
+    FOREIGN KEY (semester_id) REFERENCES Semester(id),
+    FOREIGN KEY (class_id) REFERENCES Class(id)
+    );
 
 -- Tạo bảng Thông Báo (Notifications)
 CREATE TABLE IF NOT EXISTS Notifications (

@@ -15,13 +15,12 @@ import vn.studentmanagement.api.dto.request.LoginRequest;
 import vn.studentmanagement.api.dto.request.UserRequest;
 import vn.studentmanagement.api.dto.response.AuthenticationResponse;
 import vn.studentmanagement.api.dto.response.SuccessResponse;
-import vn.studentmanagement.api.entity.User;
 import vn.studentmanagement.api.service.UserService;
 import vn.studentmanagement.api.utils.AuthenticationHelper;
 import vn.studentmanagement.config.BaseResponse;
 
 @RestController
-@RequestMapping("api/v1/user")
+@RequestMapping("api/v1/users")
 @RequiredArgsConstructor
 public class AuthenticationController {
 

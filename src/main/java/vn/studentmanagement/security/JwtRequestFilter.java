@@ -70,7 +70,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                     && Boolean.TRUE.equals(jwtUtils.isActiveToken(token, userId))
             ) {
                 UserDetails user = jwtUserDetailsService.loadUserByUsername(userId);
-
                 return new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
             }
             return null;
