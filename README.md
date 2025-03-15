@@ -3,3 +3,8 @@
 # docker run --name mysql-container -e MYSQL_ROOT_PASSWORD=123456 -e MYSQL_DATABASE=student_manage -p 3306:3306 -d mysql:latest
 # admin@gmail.com
 # admin
+
+
+
+# docker build -t my-java-app .
+# docker run -p 8080:8080 my-java-app
