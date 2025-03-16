@@ -12,6 +12,7 @@ import vn.studentmanagement.api.entity.Semester;
 import vn.studentmanagement.api.service.SemesterService;
 import vn.studentmanagement.config.BaseResponse;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -20,7 +21,10 @@ public class SemesterController {
 
     @Autowired
     private SemesterService semesterService;
-
+    @GetMapping
+    public List<Semester> getAllSemester() {
+        return semesterService.getAllSemesters();
+    }
     @PostMapping("/create")
     public BaseResponse<String> create(@RequestBody SemesterRequest kyHoc) {
         semesterService.saveSemester(kyHoc);

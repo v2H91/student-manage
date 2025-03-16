@@ -77,7 +77,12 @@ public class SemesterServiceImpl implements SemesterService {
         semester.setTerm(semesterRequest.getTerm() != null ? semesterRequest.getTerm() : semester.getTerm());
         semester.setName(semesterRequest.getName() != null ? semesterRequest.getName() : semester.getName());
         semester.setStartYear(semesterRequest.getStartYear() != null ? semesterRequest.getStartYear() : semester.getStartYear());
-       return semesterRepository.save(semester);
+        return semesterRepository.save(semester);
 
+    }
+
+    @Override
+    public List<Semester> getAllSemesters() {
+        return semesterRepository.findAll();
     }
 }
