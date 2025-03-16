@@ -12,3 +12,8 @@
 
 # docker build -t my-java-app .
 # docker run -p 8080:8080 --network my-network -d my-java-app
+
+
+# ssh-keygen -t rsa -b 4096
+# cat ~/.ssh/id_rsa.pub
+# cat ~/.ssh/id_rsa
