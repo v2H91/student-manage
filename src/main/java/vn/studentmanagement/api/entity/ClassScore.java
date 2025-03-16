@@ -7,6 +7,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
+@Table(name = "Class_Score")
 public class ClassScore {
 
     @Id

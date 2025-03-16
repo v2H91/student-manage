@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name ="class")
+@Table(name ="Class")
 @Setter
 @Getter
 public class Clazz {

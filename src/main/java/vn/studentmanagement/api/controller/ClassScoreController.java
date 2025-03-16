@@ -21,13 +21,13 @@ public class ClassScoreController {
 
     private final ClassScoreService classScoreService;
 
-    @GetMapping("/{classId}")
+    @GetMapping("/{classId}/class")
     public BaseResponse<List<ClassScore>> getClassById(@PathVariable Integer classId) {
         List<ClassScore> classScores = classScoreService.getByClassId(classId);
             return BaseResponse.ofSucceeded(classScores);
     }
 
-    @GetMapping("/{studentId}")
+    @GetMapping("/{studentId}/student")
     public BaseResponse<List<ClassScore>> getStudentById(@PathVariable Integer studentId) {
         List<ClassScore> classScores = classScoreService.getByStudentId(studentId);
         return BaseResponse.ofSucceeded(classScores);
