@@ -10,7 +10,9 @@ pipeline {
 
         stage('Stop Java Application') {
             steps {
-                 sh 'sudo pkill -f "java -jar"'
+                def pid = sh(script: "ps -ef | grep 'java -jar' | grep -v grep | awk '{print \$2}'", returnStdout: true).trim()
+                if (pid) {
+                sh "sudo kill -9 ${pid}"
             }
         }
 
