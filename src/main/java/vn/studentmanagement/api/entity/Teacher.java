@@ -9,11 +9,11 @@ import lombok.Data;
 public class Teacher {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false)
     private String name;
-
-
+    private String department;
+    private String phone;
+    private String email;
 }

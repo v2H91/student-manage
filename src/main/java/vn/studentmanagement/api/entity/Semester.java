@@ -9,7 +9,7 @@ import vn.studentmanagement.api.common.enums.SemesterStatus;
 public class Semester {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(nullable = false)

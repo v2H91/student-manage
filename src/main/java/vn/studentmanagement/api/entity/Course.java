@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 public class Course {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "course_code", nullable = false, unique = true)

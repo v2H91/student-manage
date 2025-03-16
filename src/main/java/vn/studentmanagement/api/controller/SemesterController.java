@@ -5,10 +5,14 @@ import org.springframework.web.bind.annotation.*;
 import vn.studentmanagement.api.common.AppBusinessError;
 import vn.studentmanagement.api.common.ApplicationException;
 import vn.studentmanagement.api.common.enums.SemesterStatus;
+import vn.studentmanagement.api.dto.request.CourseRequest;
 import vn.studentmanagement.api.dto.request.SemesterRequest;
+import vn.studentmanagement.api.entity.Course;
 import vn.studentmanagement.api.entity.Semester;
 import vn.studentmanagement.api.service.SemesterService;
 import vn.studentmanagement.config.BaseResponse;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/semesters")
@@ -18,7 +22,7 @@ public class SemesterController {
     private SemesterService semesterService;
 
     @PostMapping("/create")
-    public BaseResponse<String> cre(@RequestBody SemesterRequest kyHoc) {
+    public BaseResponse<String> create(@RequestBody SemesterRequest kyHoc) {
         semesterService.saveSemester(kyHoc);
         return BaseResponse.ofSucceeded(kyHoc.getName() + " đã được lưu vào CSDL thành công");
     }
@@ -36,5 +40,17 @@ public class SemesterController {
         }
         semesterService.save(kyHoc);
         return BaseResponse.ofSucceeded("Chuyển đổi trạng thái kỳ học thành công");
+    }
+
+    @GetMapping("/{id}")
+    public BaseResponse<Semester> getSemesterById(@PathVariable Integer id) {
+            return BaseResponse.ofSucceeded(semesterService.findById(Long.valueOf(id)));
+    }
+
+
+    @PutMapping("/{id}")
+    public BaseResponse<Semester> updateSemester(@PathVariable Integer id, @RequestBody SemesterRequest semesterRequest) {
+        Semester semester = semesterService.updateSemester(id, semesterRequest);
+        return BaseResponse.ofSucceeded(semester);
     }
 }

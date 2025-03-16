@@ -68,4 +68,16 @@ public class SemesterServiceImpl implements SemesterService {
         }
         return flag;
     }
+
+    @Override
+    public Semester updateSemester(Integer id, SemesterRequest semesterRequest) {
+        Semester semester = semesterRepository.findById(id.intValue()).orElseThrow(
+                () -> new ApplicationException(new AppBusinessError("not found", 400))
+        );
+        semester.setTerm(semesterRequest.getTerm() != null ? semesterRequest.getTerm() : semester.getTerm());
+        semester.setName(semesterRequest.getName() != null ? semesterRequest.getName() : semester.getName());
+        semester.setStartYear(semesterRequest.getStartYear() != null ? semesterRequest.getStartYear() : semester.getStartYear());
+       return semesterRepository.save(semester);
+
+    }
 }

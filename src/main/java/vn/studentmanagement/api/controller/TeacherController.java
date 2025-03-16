@@ -23,22 +23,22 @@ public class TeacherController {
     private final TeacherService teacherService;
 
     @GetMapping
-    public List<Teacher> getAllStudents() {
+    public List<Teacher> getAllTeachers() {
         return teacherService.getAllStudents();
     }
 
 
     @GetMapping("/{id}")
-    public BaseResponse<Teacher> getStudentById(@PathVariable Integer id) {
+    public BaseResponse<Teacher> getSTeacherById(@PathVariable Integer id) {
         Optional<Teacher> teacher = teacherService.getTeacherById(id);
         if (teacher.isPresent()) {
             return BaseResponse.ofSucceeded(teacher.get());
         }
-        throw new ApplicationException(new AppBusinessError("Không tìm thấy sinh viên", 400));
+        throw new ApplicationException(new AppBusinessError("Không tìm thấy giáo viên", 400));
     }
 
     @PostMapping
-    public BaseResponse<Teacher> addStudent(@Valid @RequestBody TeacherRequest teacherRequest, BindingResult result) {
+    public BaseResponse<Teacher> addTeacher(@Valid @RequestBody TeacherRequest teacherRequest, BindingResult result) {
         if (result.hasErrors()) {
             throw new ApplicationException(new AppBusinessError("Validation failed: " + result.getAllErrors(), 400));
         }
@@ -46,13 +46,13 @@ public class TeacherController {
     }
 
     @PutMapping("/{id}")
-    public BaseResponse<Teacher> updateStudent(@PathVariable Integer id, @RequestBody TeacherRequest teacherRequest) {
+    public BaseResponse<Teacher> updateTeacher(@PathVariable Integer id, @RequestBody TeacherRequest teacherRequest) {
         Teacher updated = teacherService.updateTeacher(id, teacherRequest);
         return BaseResponse.ofSucceeded(updated);
     }
 
     @DeleteMapping("/{id}")
-    public BaseResponse<Void> deleteStudent(@PathVariable Integer id) {
+    public BaseResponse<Void> deleteTeacher(@PathVariable Integer id) {
         teacherService.deleteTeacher(id);
         return BaseResponse.ofSucceeded();
     }

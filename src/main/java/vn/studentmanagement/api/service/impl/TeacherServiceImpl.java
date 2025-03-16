@@ -26,6 +26,9 @@ public class TeacherServiceImpl implements TeacherService {
     public Teacher updateTeacher(Integer id, TeacherRequest teacherRequest) {
         Teacher teacher = teacherRepository.findById(id).orElseThrow(() -> new ApplicationException(new AppBusinessError("Teacher not found", 400)));
         teacher.setName(teacherRequest.getName());
+        teacher.setDepartment(teacherRequest.getDepartment());
+        teacher.setPhone(teacherRequest.getPhone());
+        teacher.setEmail(teacherRequest.getEmail());
         return teacherRepository.save(teacher);
     }
 
@@ -33,6 +36,9 @@ public class TeacherServiceImpl implements TeacherService {
     public Teacher addTeacher(TeacherRequest teacherRequest) {
         Teacher teacher = new Teacher();
         teacher.setName(teacherRequest.getName());
+        teacher.setDepartment(teacherRequest.getDepartment());
+        teacher.setPhone(teacherRequest.getPhone());
+        teacher.setEmail(teacherRequest.getEmail());
         return teacherRepository.save(teacher);
     }
 

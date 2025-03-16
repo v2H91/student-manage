@@ -10,7 +10,7 @@ import lombok.Setter;
 @Getter
 public class Clazz {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @ManyToOne
