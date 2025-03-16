@@ -10,7 +10,7 @@ pipeline {
 
         stage('Stop Java Application') {
             steps {
-                 sh 'pkill -f "java -jar"'
+                 sh 'sudo pkill -f "java -jar"'
             }
         }
 

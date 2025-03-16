@@ -5,7 +5,7 @@
 # admin
 
 # to run java app in background, write to output log file
-# nohup java -jar your-java-app.jar > output.log 2>&1 &
+# nohup java -jar student-management-0.0.1-SNAPSHOT.jar > output.log 2>&1 &
 
 # docker network create my-network
 # docker network ls
