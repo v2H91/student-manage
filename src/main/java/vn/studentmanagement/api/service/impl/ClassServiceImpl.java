@@ -11,6 +11,9 @@ import vn.studentmanagement.api.repository.CourseRepository;
 import vn.studentmanagement.api.repository.TeacherRepository;
 import vn.studentmanagement.api.service.ClassService;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class ClassServiceImpl implements ClassService {
     @Autowired
@@ -29,5 +32,35 @@ public class ClassServiceImpl implements ClassService {
         clazz.setTeacher(teacherRepository.findById(classRequest.getTeacherId()).orElseThrow(() -> new ApplicationException(new AppBusinessError("not found teacher",400))));
         clazz.setCourse(courseRepository.findById(classRequest.getCourseId()).orElseThrow(() -> new ApplicationException(new AppBusinessError("not found course",400))));
         classRepository.save(clazz);
+    }
+
+    @Override
+    public void deleteClass(Integer id) {
+        classRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Clazz> getAllClass() {
+        return classRepository.findAll();
+    }
+
+    @Override
+    public Optional<Clazz> getClassById(Integer id) {
+        return classRepository.findById(id);
+    }
+
+    @Override
+    public Clazz updateClass(Integer id, ClassRequest classRequest) {
+        Optional<Clazz> clazzOpt = classRepository.findById(id);
+        if (clazzOpt.isEmpty()){
+            throw new ApplicationException(new AppBusinessError("Không tìm thấy sinh viên", 400));
+        }
+        Clazz clazz  = clazzOpt.get();
+        clazz.setClassCode(classRequest.getClassCode());
+        clazz.setClassName(classRequest.getClassName());
+        clazz.setClassGroup(classRequest.getClassGroup());
+        clazz.setTeacher(teacherRepository.findById(classRequest.getTeacherId()).orElseThrow(() -> new ApplicationException(new AppBusinessError("not found teacher",400))));
+        clazz.setCourse(courseRepository.findById(classRequest.getCourseId()).orElseThrow(() -> new ApplicationException(new AppBusinessError("not found course",400))));
+        return classRepository.save(clazz);
     }
 }

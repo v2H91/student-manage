@@ -6,7 +6,6 @@ import vn.studentmanagement.api.common.AppBusinessError;
 import vn.studentmanagement.api.common.ApplicationException;
 import vn.studentmanagement.api.dto.request.SemesterRequest;
 import vn.studentmanagement.api.entity.ClassScore;
-import vn.studentmanagement.api.entity.Clazz;
 import vn.studentmanagement.api.entity.Semester;
 import vn.studentmanagement.api.entity.SemesterClass;
 import vn.studentmanagement.api.repository.ClassScoreRepository;

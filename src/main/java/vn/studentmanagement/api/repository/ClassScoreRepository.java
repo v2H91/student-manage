@@ -12,4 +12,6 @@ public interface ClassScoreRepository extends JpaRepository<ClassScore, Integer>
 
     @Query("select cs from ClassScore cs where cs.aClass.id in :classIds")
     List<ClassScore> findByClassIds(List<Integer> classIds);
+    @Query("select cs from ClassScore cs where cs.student.id in :studentId")
+    List<ClassScore> findByStudentId(List<Integer>  studentId);
 }
