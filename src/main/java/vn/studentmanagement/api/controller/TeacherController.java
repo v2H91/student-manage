@@ -57,4 +57,13 @@ public class TeacherController {
         return BaseResponse.ofSucceeded();
     }
 
+
+    @GetMapping("/search-teachers")
+    public List<Teacher> searchTeachers(@RequestParam(required = false) String fullName,
+                                        @RequestParam(required = false) String department,
+                                        @RequestParam(required = false) String phone,
+                                        @RequestParam(required = false) String email) {
+        return teacherService.searchTeachers(fullName, department, phone, email);
+    }
+
 }

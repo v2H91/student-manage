@@ -51,4 +51,9 @@ public class TeacherServiceImpl implements TeacherService {
     public List<Teacher> getAllStudents() {
         return teacherRepository.findAll();
     }
+
+    @Override
+    public List<Teacher> searchTeachers(String fullName, String department, String phone, String email) {
+        return teacherRepository.searchTeachers(fullName, department, phone, email);
+    }
 }

@@ -1,7 +1,6 @@
 package vn.studentmanagement.api.service;
 
 
-import vn.studentmanagement.api.dto.request.StudentRequest;
 import vn.studentmanagement.api.entity.Teacher;
 import vn.studentmanagement.api.dto.request.TeacherRequest;
 
@@ -19,4 +18,6 @@ public interface TeacherService {
     Optional<Teacher> getTeacherById(Integer id);
 
     List<Teacher> getAllStudents();
+
+    List<Teacher> searchTeachers(String fullName, String department, String phone, String email);
 }
