@@ -11,7 +11,7 @@
 # docker network ls
 
 # docker build -t my-java-app .
-# docker run -p 8080:8080 --network my-network -d my-java-app
+# docker run -p 8080:8080 -d my-java-app
 
 
 # ssh-keygen -t rsa -b 4096
