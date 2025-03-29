@@ -2,6 +2,7 @@ package vn.studentmanagement.api.service;
 
 import vn.studentmanagement.api.dto.request.ClassRequest;
 import vn.studentmanagement.api.entity.Clazz;
+import vn.studentmanagement.api.entity.SemesterClass;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,7 +14,8 @@ public interface ClassService {
 
     List<Clazz> getAllClass();
 
-    Optional<Clazz> getClassById(Integer id);
+    Optional<SemesterClass> getClassById(Integer id);
 
     Clazz updateClass(Integer id, ClassRequest classDetails);
+
 }

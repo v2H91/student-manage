@@ -33,6 +33,13 @@ public class ClassScoreController {
         return BaseResponse.ofSucceeded(classScores);
     }
 
+    @GetMapping("/{studentId}/{semesterId}")
+    public BaseResponse<List<ClassScore>> getStudentById(@PathVariable Integer studentId,
+                                                         @PathVariable Integer semesterId) {
+        List<ClassScore> classScores = classScoreService.getByStudentIdAndSemester(studentId, semesterId);
+        return BaseResponse.ofSucceeded(classScores);
+    }
+
     @PostMapping
     public BaseResponse<String> createClassScore(@Valid @RequestBody ClassScoreRequest classScoreReuqest, BindingResult result) {
         if (result.hasErrors()) {

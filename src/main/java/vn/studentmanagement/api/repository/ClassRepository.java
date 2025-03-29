@@ -5,4 +5,5 @@ import vn.studentmanagement.api.entity.Clazz;
 
 public interface ClassRepository extends JpaRepository<Clazz, Integer> {
 
+
 }

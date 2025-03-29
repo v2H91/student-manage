@@ -34,4 +34,6 @@ public class ClassScore {
     @Column(name = "project_score")
     private Double projectScore;
 
+    @Column(name = "final_score")
+    private Double finalScore;
 }

@@ -16,8 +16,8 @@ public class ClassRequest {
     private String classGroup;
     @NotBlank(message = "Tên lớp chưa được nhập!")
     private String className;
-    @NotBlank(message = "Mã lớp chưa được nhập!")
-    private String classCode;
     @NotBlank(message = "Giáo viên giảng dạy của lớp chưa được lựa chọn!")
     private Integer teacherId;
+
+    private Integer semesterId;
 }

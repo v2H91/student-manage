@@ -7,14 +7,16 @@ import vn.studentmanagement.api.common.ApplicationException;
 import vn.studentmanagement.api.dto.request.ClassScoreRequest;
 import vn.studentmanagement.api.dto.request.ClassScoreUpdate;
 import vn.studentmanagement.api.entity.ClassScore;
-import vn.studentmanagement.api.entity.Course;
+import vn.studentmanagement.api.entity.SemesterClass;
 import vn.studentmanagement.api.repository.ClassRepository;
 import vn.studentmanagement.api.repository.ClassScoreRepository;
+import vn.studentmanagement.api.repository.SemesterClassRepository;
 import vn.studentmanagement.api.repository.StudentRepository;
 import vn.studentmanagement.api.service.ClassScoreService;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +24,7 @@ public class ClassScoreServiceImpl implements ClassScoreService {
     private final ClassScoreRepository classScoreRepository;
     private final ClassRepository classRepository;
     private final StudentRepository studentRepository;
+    private final SemesterClassRepository semesterClassRepository;
     @Override
     public List<ClassScore> getByClassId(Integer classId) {
         return classScoreRepository.findByClassIds(List.of(classId));
@@ -46,10 +49,12 @@ public class ClassScoreServiceImpl implements ClassScoreService {
                         () -> new ApplicationException(new AppBusinessError("student id not found",400)
                         )
                 ));
-        classScore.setAttendanceScore(classScore.getAttendanceScore());
+        classScore.setAttendanceScore(classScoreRequest.getAttendanceScore());
         classScore.setProjectScore(classScoreRequest.getProjectScore());
         classScore.setPracticeScore(classScoreRequest.getPracticeScore());
         classScore.setTestScore(classScoreRequest.getTestScore());
+        classScore.setFinalScore(classScoreRequest.getFinalScore());
+        classScoreRepository.save(classScore);
     }
 
     @Override
@@ -64,6 +69,13 @@ public class ClassScoreServiceImpl implements ClassScoreService {
         classScore.setPracticeScore(classScoreRequest.getPracticeScore() != null ? classScoreRequest.getPracticeScore() : classScore.getPracticeScore());
         classScore.setAttendanceScore(classScoreRequest.getAttendanceScore() != null ? classScoreRequest.getAttendanceScore() : classScore.getAttendanceScore());
         return classScoreRepository.save( classScore);
+    }
+
+    @Override
+    public List<ClassScore> getByStudentIdAndSemester(Integer studentId, Integer semesterId) {
+        List<SemesterClass> bySemesterId = semesterClassRepository.findBySemesterId(semesterId);
+        List<Integer> classIds = bySemesterId.stream().map(e -> e.getAClass().getId()).collect(Collectors.toList());
+        return  classScoreRepository.findByStudentIdAndClassIds(studentId,classIds);
     }
 
 }

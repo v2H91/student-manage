@@ -17,4 +17,6 @@ public class ClassScoreRequest {
     private Double practiceScore;
 
     private Double projectScore;
+
+    private Double finalScore;
 }

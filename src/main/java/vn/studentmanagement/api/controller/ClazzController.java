@@ -8,6 +8,7 @@ import vn.studentmanagement.api.common.AppBusinessError;
 import vn.studentmanagement.api.common.ApplicationException;
 import vn.studentmanagement.api.dto.request.ClassRequest;
 import vn.studentmanagement.api.entity.Clazz;
+import vn.studentmanagement.api.entity.SemesterClass;
 import vn.studentmanagement.api.service.ClassService;
 import vn.studentmanagement.config.BaseResponse;
 
@@ -34,15 +35,31 @@ public class ClazzController {
         return classService.getAllClass();
     }
 
-
     @GetMapping("/{id}")
-    public BaseResponse<Clazz> getClassById(@PathVariable Integer id) {
-        Optional<Clazz> clazz = classService.getClassById(id);
+    public BaseResponse<SemesterClass> getClassById(@PathVariable Integer id) {
+        Optional<SemesterClass> clazz = classService.getClassById(id);
         if (clazz.isPresent()) {
             return BaseResponse.ofSucceeded(clazz.get());
         }
         throw new ApplicationException(new AppBusinessError("Không tìm thấy Class", 400));
     }
+    @GetMapping("/{CourseId}")
+    public BaseResponse<SemesterClass> getClassByCourseId(@PathVariable Integer CourseId) {
+        Optional<SemesterClass> clazz = classService.getClassById(CourseId);
+        if (clazz.isPresent()) {
+            return BaseResponse.ofSucceeded(clazz.get());
+        }
+        throw new ApplicationException(new AppBusinessError("Không tìm thấy Class", 400));
+    }
+
+//    @GetMapping("/{studentId}")
+//    public BaseResponse<SemesterClass> getClassByStudentId(@PathVariable Integer studentId) {
+//        Optional<SemesterClass> clazz = classService.getClassByStudentId(studentId);
+//        if (clazz.isPresent()) {
+//            return BaseResponse.ofSucceeded(clazz.get());
+//        }
+//        throw new ApplicationException(new AppBusinessError("Không tìm thấy Class", 400));
+//    }
 
     @PutMapping("/{id}")
     public BaseResponse<Clazz> updateClass(@PathVariable Integer id, @RequestBody ClassRequest classDetails) {

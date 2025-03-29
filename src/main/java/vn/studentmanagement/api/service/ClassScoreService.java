@@ -15,4 +15,6 @@ public interface ClassScoreService {
     void createScore(ClassScoreRequest classScoreReuqest);
 
     ClassScore updateScore(Integer id, ClassScoreUpdate classScoreRequest);
+
+    List<ClassScore> getByStudentIdAndSemester(Integer studentId, Integer semesterId);
 }
