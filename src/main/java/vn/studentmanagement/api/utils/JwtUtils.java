@@ -5,6 +5,7 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import vn.studentmanagement.api.entity.UserToken;
 import vn.studentmanagement.api.repository.UserTokenRepository;
@@ -17,7 +18,7 @@ import java.util.function.Function;
 @Component
 @AllArgsConstructor
 public class JwtUtils {
-
+    public static final BCryptPasswordEncoder bCryptPasswordEncoder= new BCryptPasswordEncoder();
     private final UserTokenRepository userTokenRepository;
     public String generateToken(String jwtSecret, Long userId, long time) {
         return Jwts.builder().setClaims(new HashMap<>())

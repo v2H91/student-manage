@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import vn.studentmanagement.api.common.AppBusinessError;
 import vn.studentmanagement.api.common.ApplicationException;
@@ -13,6 +12,7 @@ import vn.studentmanagement.api.dto.request.ChangePasswordRequest;
 import vn.studentmanagement.api.dto.request.LoginRequest;
 import vn.studentmanagement.api.dto.request.UserRequest;
 import vn.studentmanagement.api.dto.response.AuthenticationResponse;
+import vn.studentmanagement.api.dto.response.UserResponse;
 import vn.studentmanagement.api.entity.User;
 import vn.studentmanagement.api.entity.UserToken;
 import vn.studentmanagement.api.repository.UserRepository;
@@ -23,7 +23,12 @@ import vn.studentmanagement.api.utils.JwtUtils;
 import io.jsonwebtoken.Claims;
 
 import java.sql.Timestamp;
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
+import static vn.studentmanagement.api.utils.JwtUtils.bCryptPasswordEncoder;
 
 @Service
 @RequiredArgsConstructor
@@ -31,16 +36,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final AuthenticationHelper authenticationHelper;
     private final JwtUtils jwtUtils;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final UserTokenRepository userTokenRepository;
-@Autowired
-    public UserServiceImpl(UserRepository userRepository, AuthenticationHelper authenticationHelper, JwtUtils jwtUtils, UserTokenRepository userTokenRepository) {
-        this.userRepository = userRepository;
-        this.authenticationHelper = authenticationHelper;
-        this.jwtUtils = jwtUtils;
-        this.bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        this.userTokenRepository = userTokenRepository;
-    }
 
     @Value("${jwt.secret}")
     private String jwtSecret;
@@ -92,6 +88,9 @@ public class UserServiceImpl implements UserService {
         user.setEmail(userRequest.getEmail());
         user.setRole(RoleEnum.fromString(userRequest.getRole()));
         user.setFullName(userRequest.getFullName());
+        user.setDateOfBirth(new Date());
+        user.setCreatedAt(new Date());
+        user.setUpdatedAt(new Date());
         return userRepository.save(user);
     }
 
@@ -111,5 +110,17 @@ public class UserServiceImpl implements UserService {
         user.setPassword(bCryptPasswordEncoder.encode(request.getNewPassword()));
         userRepository.save(user);
         return "Đổi mật khẩu thành công";
+    }
+
+    @Override
+    public void delete(Integer id) {
+        userRepository.deleteById(Long.valueOf(id));
+    }
+
+    @Override
+    public List<UserResponse> getAllUsers() {
+        List<User> all = userRepository.findAll();
+        return all.stream().map(user -> new UserResponse(user.getUserId(), user.getRole().toString(),
+                user.getFullName(), user.getEmail(), user.getDateOfBirth())).collect(Collectors.toList());
     }
 }
