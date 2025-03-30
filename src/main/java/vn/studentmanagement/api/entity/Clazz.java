@@ -29,4 +29,6 @@ public class Clazz {
     @ManyToOne
     @JoinColumn(name = "teacher_id", nullable = false)
     private Teacher teacher;
+
+    private String students;
 }

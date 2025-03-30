@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,6 +20,6 @@ public class ClassRequest {
     private String className;
     @NotBlank(message = "Giáo viên giảng dạy của lớp chưa được lựa chọn!")
     private Integer teacherId;
-
     private Integer semesterId;
+    private List<Integer> studentIds;
 }

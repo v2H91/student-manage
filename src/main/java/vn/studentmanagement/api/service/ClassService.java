@@ -14,7 +14,7 @@ public interface ClassService {
 
     List<Clazz> getAllClass();
 
-    Optional<SemesterClass> getClassById(Integer id);
+    SemesterClass getClassById(Integer id);
 
     Clazz updateClass(Integer id, ClassRequest classDetails);
 

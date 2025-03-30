@@ -1,9 +1,10 @@
 version: '4'
 services:
   java-app:
-    build: .
+    image: vvhung3/java-app:latest
     ports:
-      - "8080:8080"
+      - "9000:9000"
+    restart: always
     depends_on:
       - db
     networks:

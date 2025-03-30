@@ -15,6 +15,8 @@ import vn.studentmanagement.config.BaseResponse;
 import java.util.List;
 import java.util.Optional;
 
+import static vn.studentmanagement.config.BaseResponse.ofSucceeded;
+
 @RestController
 @RequestMapping("/api/v1/classes")
 public class ClazzController {
@@ -28,7 +30,7 @@ public class ClazzController {
            throw  new ApplicationException(new AppBusinessError("Validation failed: " + result.getAllErrors(),400));
         }
         classService.saveLopMonHoc(classRequest);
-        return BaseResponse.ofSucceeded("Lớp môn học đã được lưu vào CSDL thành công");
+        return ofSucceeded("Lớp môn học đã được lưu vào CSDL thành công");
     }
     @GetMapping
     public List<Clazz> getAllClass() {
@@ -37,20 +39,9 @@ public class ClazzController {
 
     @GetMapping("/{id}")
     public BaseResponse<SemesterClass> getClassById(@PathVariable Integer id) {
-        Optional<SemesterClass> clazz = classService.getClassById(id);
-        if (clazz.isPresent()) {
-            return BaseResponse.ofSucceeded(clazz.get());
-        }
-        throw new ApplicationException(new AppBusinessError("Không tìm thấy Class", 400));
-    }
-    @GetMapping("/{CourseId}")
-    public BaseResponse<SemesterClass> getClassByCourseId(@PathVariable Integer CourseId) {
-        Optional<SemesterClass> clazz = classService.getClassById(CourseId);
-        if (clazz.isPresent()) {
-            return BaseResponse.ofSucceeded(clazz.get());
-        }
-        throw new ApplicationException(new AppBusinessError("Không tìm thấy Class", 400));
-    }
+        SemesterClass clazz = classService.getClassById(id);
+            return ofSucceeded(clazz);
+   }
 
 //    @GetMapping("/{studentId}")
 //    public BaseResponse<SemesterClass> getClassByStudentId(@PathVariable Integer studentId) {
@@ -64,13 +55,13 @@ public class ClazzController {
     @PutMapping("/{id}")
     public BaseResponse<Clazz> updateClass(@PathVariable Integer id, @RequestBody ClassRequest classDetails) {
         Clazz updatedClass = classService.updateClass(id, classDetails);
-        return BaseResponse.ofSucceeded(updatedClass);
+        return ofSucceeded(updatedClass);
     }
 
     @DeleteMapping("/{id}")
     public BaseResponse<Void> deleteClass(@PathVariable Integer id) {
         classService.deleteClass(id);
-        return BaseResponse.ofSucceeded();
+        return ofSucceeded();
     }
 
 }
