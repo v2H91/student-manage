@@ -32,8 +32,9 @@ public class ClazzController {
         classService.saveLopMonHoc(classRequest);
         return ofSucceeded("Lớp môn học đã được lưu vào CSDL thành công");
     }
+
     @GetMapping
-    public List<Clazz> getAllClass() {
+    public List<SemesterClass> getAllClass() {
         return classService.getAllClass();
     }
 
@@ -42,15 +43,6 @@ public class ClazzController {
         SemesterClass clazz = classService.getClassById(id);
             return ofSucceeded(clazz);
    }
-
-//    @GetMapping("/{studentId}")
-//    public BaseResponse<SemesterClass> getClassByStudentId(@PathVariable Integer studentId) {
-//        Optional<SemesterClass> clazz = classService.getClassByStudentId(studentId);
-//        if (clazz.isPresent()) {
-//            return BaseResponse.ofSucceeded(clazz.get());
-//        }
-//        throw new ApplicationException(new AppBusinessError("Không tìm thấy Class", 400));
-//    }
 
     @PutMapping("/{id}")
     public BaseResponse<Clazz> updateClass(@PathVariable Integer id, @RequestBody ClassRequest classDetails) {

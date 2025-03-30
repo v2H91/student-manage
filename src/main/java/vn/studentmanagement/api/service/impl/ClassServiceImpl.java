@@ -12,11 +12,7 @@ import vn.studentmanagement.api.entity.Student;
 import vn.studentmanagement.api.repository.*;
 import vn.studentmanagement.api.service.ClassService;
 
-import java.sql.Timestamp;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -71,27 +67,43 @@ public class ClassServiceImpl implements ClassService {
     }
 
     @Override
-    public List<Clazz> getAllClass() {
-        return classRepository.findAll();
+    public List<SemesterClass> getAllClass() {
+        List<SemesterClass> semesterClasses = new ArrayList<>();
+        List<Clazz> all = classRepository.findAll();
+        for(Clazz cls : all){
+            Optional<SemesterClass> byaClass = semesterClassRepository.findByaClass(cls);
+            SemesterClass semesterClass = byaClass.get();
+            if (!cls.getStudents().isEmpty()){
+                List<Integer> studentIds = Arrays.stream(cls.getStudents().split(",")).map(
+                        Integer::parseInt
+                ).toList();
+                List<Student> allById = studentRepository.findAllById(studentIds);
+                semesterClass.setStudents(allById);
+            }
+            semesterClasses.add(semesterClass);
+        }
+        return semesterClasses;
     }
 
     @Override
     public SemesterClass getClassById(Integer id) {
         Optional<Clazz> byId = classRepository.findById(id);
         if (byId.isEmpty()){
-            throw new ApplicationException(new AppBusinessError("Không tìm thấy sinh viên", 400));
+            throw new ApplicationException(new AppBusinessError("Không tìm thấy class", 400));
         }
         Clazz clazz = byId.get();
         Optional<SemesterClass> byaClass = semesterClassRepository.findByaClass(clazz);
         if (byaClass.isEmpty()){
-            throw new ApplicationException(new AppBusinessError("Không tìm thấy sinh viên", 400));
+            throw new ApplicationException(new AppBusinessError("Không tìm thấy class", 400));
         }
         SemesterClass semesterClass = byaClass.get();
-        List<Integer> studentIds = Arrays.stream(clazz.getStudents().split(",")).map(
-                Integer::parseInt
-        ).toList();
-        List<Student> allById = studentRepository.findAllById(studentIds);
-        semesterClass.setStudents(allById);
+        if (!clazz.getStudents().isEmpty()){
+            List<Integer> studentIds = Arrays.stream(clazz.getStudents().split(",")).map(
+                    Integer::parseInt
+            ).toList();
+            List<Student> allById = studentRepository.findAllById(studentIds);
+            semesterClass.setStudents(allById);
+        }
         return semesterClass;
     }
 

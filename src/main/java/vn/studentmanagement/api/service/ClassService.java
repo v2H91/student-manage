@@ -5,14 +5,12 @@ import vn.studentmanagement.api.entity.Clazz;
 import vn.studentmanagement.api.entity.SemesterClass;
 
 import java.util.List;
-import java.util.Optional;
-
 public interface ClassService {
     void saveLopMonHoc(ClassRequest classRequest);
 
     void deleteClass(Integer id);
 
-    List<Clazz> getAllClass();
+    List<SemesterClass> getAllClass();
 
     SemesterClass getClassById(Integer id);
 

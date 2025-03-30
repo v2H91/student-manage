@@ -8,6 +8,7 @@ import vn.studentmanagement.api.common.AppBusinessError;
 import vn.studentmanagement.api.common.ApplicationException;
 import vn.studentmanagement.api.dto.request.StudentRequest;
 import vn.studentmanagement.api.entity.Student;
+import vn.studentmanagement.api.entity.Teacher;
 import vn.studentmanagement.api.service.StudentService;
 import vn.studentmanagement.config.BaseResponse;
 
@@ -56,5 +57,11 @@ public class StudentController {
         return BaseResponse.ofSucceeded();
     }
 
-
+    @GetMapping("/search-students")
+    public List<Student> searchStudents(@RequestParam(required = false) String name,
+                                        @RequestParam(required = false) String department,
+                                        @RequestParam(required = false) String studentCode,
+                                        @RequestParam(required = false) String email) {
+        return studentService.searchStudents(name, department, studentCode, email);
+    }
 }

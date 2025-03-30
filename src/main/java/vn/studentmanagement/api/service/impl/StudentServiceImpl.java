@@ -8,6 +8,7 @@ import vn.studentmanagement.api.common.ApplicationException;
 import vn.studentmanagement.api.common.enums.RoleEnum;
 import vn.studentmanagement.api.dto.request.StudentRequest;
 import vn.studentmanagement.api.entity.Student;
+import vn.studentmanagement.api.entity.Teacher;
 import vn.studentmanagement.api.entity.User;
 import vn.studentmanagement.api.repository.StudentRepository;
 import vn.studentmanagement.api.repository.UserRepository;
@@ -83,5 +84,10 @@ public class StudentServiceImpl implements StudentService {
         student.setEmail(studentDetails.getEmail());
         student.setPhone(studentDetails.getPhone());
         return studentRepository.save(student);
+    }
+
+    @Override
+    public List<Student> searchStudents(String name, String department, String studentCode, String email) {
+        return studentRepository.searchStudents(name,department,studentCode,email);
     }
 }
