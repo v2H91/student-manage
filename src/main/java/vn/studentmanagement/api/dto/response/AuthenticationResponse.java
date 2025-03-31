@@ -12,4 +12,5 @@ public class AuthenticationResponse {
     private String token;
     private String userType;
     private long expiration;
+    private String userId;
 }

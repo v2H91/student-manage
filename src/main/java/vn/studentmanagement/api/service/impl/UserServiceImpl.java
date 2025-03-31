@@ -52,7 +52,7 @@ public class UserServiceImpl implements UserService {
                 var expiration = jwtUtils.extractClaim(jwtSecret, token, Claims::getExpiration);
 
                 userTokenRepository.save(new UserToken(token, user.getUserId().toString(), true, new Timestamp(expiration.getTime())));
-                return new AuthenticationResponse(token, user.getRole().toString(), expiration.getTime());
+                return new AuthenticationResponse(token, user.getRole().toString(), expiration.getTime(), user.getUserId().toString());
             }
             throw new ApplicationException(new AppBusinessError("tài khoản của bạn không đúng", 400));
         }
@@ -70,10 +70,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void disableUserToken() {
-        Optional<UserToken> optionalUserToken =
+        List<UserToken> optionalUserToken =
                 userTokenRepository.findByUserId(authenticationHelper.getUserId());
-        if (optionalUserToken.isPresent()){
-            UserToken userToken = optionalUserToken.get();
+        for(UserToken userToken : optionalUserToken){
             userToken.setActive(false);
             userTokenRepository.save(userToken);
         }

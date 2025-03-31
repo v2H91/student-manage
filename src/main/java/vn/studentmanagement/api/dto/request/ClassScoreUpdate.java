@@ -11,4 +11,5 @@ public class ClassScoreUpdate {
     private Double practiceScore;
 
     private Double projectScore;
+    private Double finalScore;
 }

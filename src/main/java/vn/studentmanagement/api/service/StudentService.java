@@ -19,4 +19,6 @@ public interface StudentService {
     Student updateStudent(Integer id, StudentRequest studentDetails);
 
     List<Student> searchStudents(String fullName, String department, String studentCode, String email);
+
+    List<Student> getStudentsByIds(List<Integer> ids);
 }

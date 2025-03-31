@@ -37,6 +37,12 @@ public class StudentController {
         throw new ApplicationException(new AppBusinessError("Không tìm thấy sinh viên", 400));
     }
 
+    @GetMapping("/by-ids")
+    public BaseResponse<List<Student>> getStudentsByIds(@RequestParam List<Integer> ids) {
+        List<Student> students = studentService.getStudentsByIds(ids);
+        return BaseResponse.ofSucceeded(students);
+    }
+
     @PostMapping
     public BaseResponse<Student> addStudent(@Valid @RequestBody StudentRequest student, BindingResult result) {
         if (result.hasErrors()) {

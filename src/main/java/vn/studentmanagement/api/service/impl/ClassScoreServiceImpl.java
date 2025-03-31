@@ -45,7 +45,7 @@ public class ClassScoreServiceImpl implements ClassScoreService {
         ));
 
         classScore.setStudent(
-                studentRepository.findById(classScoreRequest.getClassId()).orElseThrow(
+                studentRepository.findById(classScoreRequest.getStudentId()).orElseThrow(
                         () -> new ApplicationException(new AppBusinessError("student id not found",400)
                         )
                 ));
@@ -68,6 +68,7 @@ public class ClassScoreServiceImpl implements ClassScoreService {
         classScore.setProjectScore(classScoreRequest.getProjectScore() != null ? classScoreRequest.getProjectScore() : classScore.getProjectScore());
         classScore.setPracticeScore(classScoreRequest.getPracticeScore() != null ? classScoreRequest.getPracticeScore() : classScore.getPracticeScore());
         classScore.setAttendanceScore(classScoreRequest.getAttendanceScore() != null ? classScoreRequest.getAttendanceScore() : classScore.getAttendanceScore());
+        classScore.setFinalScore(classScoreRequest.getFinalScore() != null ? classScoreRequest.getFinalScore() : classScore.getFinalScore());
         return classScoreRepository.save( classScore);
     }
 

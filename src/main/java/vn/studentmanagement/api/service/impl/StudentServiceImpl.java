@@ -90,4 +90,9 @@ public class StudentServiceImpl implements StudentService {
     public List<Student> searchStudents(String name, String department, String studentCode, String email) {
         return studentRepository.searchStudents(name,department,studentCode,email);
     }
+
+    @Override
+    public List<Student> getStudentsByIds(List<Integer> ids) {
+        return studentRepository.findAllById(ids);
+    }
 }
